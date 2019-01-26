@@ -1,8 +1,8 @@
-import React from 'react';
-import { Route, NavLink } from 'react-router-dom';
+import React from "react";
+import { Route, NavLink } from "react-router-dom";
 
-import Shipping from './Shipping';
-import Story from './Story';
+import Shipping from "./Shipping";
+import Story from "./Story";
 
 function Item(props) {
   console.log(props);
@@ -43,6 +43,9 @@ function Item(props) {
         path={`/shop/${item.id}/shipping`}
         render={props => <Shipping {...props} item={item} />}
       />
+      <button onClick={e => props.deleteItem(e, item.id)} className="md-button">
+        Delete Item
+      </button>
     </div>
   );
 }

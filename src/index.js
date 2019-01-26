@@ -17,8 +17,8 @@ const baseUrl = "http://localhost:3333";
 
 class App extends React.Component {
   // add constructor and CDM
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       items: [],
       newItem: {
@@ -57,15 +57,29 @@ class App extends React.Component {
       };
     });
   };
-
+  //Create
   addItem = e => {
     e.preventDefault();
     axios
       .post(`${baseUrl}/items`, this.state.newItem)
       .then(res => {
         this.setState({ items: res.data });
+        this.props.history.push("/shop");
       })
       .catch(err => console.log(err));
+  };
+  //Delete
+  deleteItem = (e, itemId) => {
+    e.preventDefault();
+    axios
+      .delete(`${baseUrl}/items/${itemId}`)
+      .then(res => {
+        this.setState({ items: res.data });
+        this.props.history.push("/shop");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -93,7 +107,13 @@ class App extends React.Component {
         {/* {...props} => same as history={props.history} match={props.match} location={props.location}*/}
         <Route
           path="/shop/:itemId"
-          render={props => <Item {...props} itemList={this.state.items} />}
+          render={props => (
+            <Item
+              {...props}
+              deleteItem={this.deleteItem}
+              itemList={this.state.items}
+            />
+          )}
         />
         {/* the : tells react-router that this is a param */}
         <Route
